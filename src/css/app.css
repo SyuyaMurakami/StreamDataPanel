@@ -1,0 +1,350 @@
+/* Import default css */
+@import url('react-grid-layout/css/styles.css');
+@import url('react-resizable/css/styles.css');
+
+/* header*/
+
+.app {
+  font-size: clamp(0.8rem, 1.5vw, 2rem);
+  min-width: 450px;
+}
+
+.header-row {
+  display: flex; 
+  align-items: center;
+  position: relative;
+  width: 100%; 
+}
+
+.header-title {
+  width: 100%;
+  outline: none;
+}
+
+.header-input {
+  border: none;
+  background: transparent;
+  padding: 0;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  width: inherit; 
+  text-align: inherit;
+  font-size: 2em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+}
+
+/* control */
+.control-icon-container {
+  height: 5.5%;
+  width: 39px;
+  padding: 8px;
+  padding-left: 6px;
+  background-color: rgba(240, 242, 245, 0.5);
+  min-height: 36px;
+  min-width: 39px;
+  border-radius: 40px;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #1e1e1e;
+  z-index: 1000;
+  display: flex; 
+  align-items: center;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* toggle button */
+.control-icon-button {
+  height: 27px;
+  width: 22px;
+  font-size: clamp(0.6rem, 0.7vw, 0.9rem);
+  font-weight: bold;
+  margin-left: 10px;
+  padding: 7px;
+  padding-left: 4px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 10;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  transition: background-color 0.5s ease-in-out, width 0.35s ease-in-out, opacity 1s ease-in-out;
+}
+
+.control-icon-svg {
+  width: clamp(0.85rem, 0.88vw, 0.91rem);
+  height: clamp(0.85rem, 0.88vw, 0.91rem);
+  margin: 0;
+  padding: 0;
+}
+
+/* input output */
+
+.config-io-group {
+  height: 100%;
+  width: 20%;
+  position: absolute;
+  justify-content: flex-end; 
+  align-items: center; 
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex; 
+  gap: 10px; 
+}
+
+.config-io-container {
+  transition: width 0.35s ease-in-out, opacity 1s ease-in-out;
+}
+
+.config-io-button.open {
+  background-color: var(--primary-color-hover); 
+}
+
+
+/* theme */
+
+/* theme-container */
+.theme-selector-container {
+  position: absolute;
+  gap: 10px; /* distance between button and list */
+  transition: width 0.35s ease-in-out, opacity 1s ease-in-out;
+}
+
+.theme-selector-container.open {
+  width: 30%;
+}
+
+.theme-select-button {
+  width: 9%;
+  min-width: 100px;
+  padding: 5px 20px;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: none;
+  border-radius: 20px;
+  font-size: clamp(0.8rem, 1.1vw, 1.4rem);
+  cursor: pointer;
+  transition: background-color 0.5s ease-in-out, width 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.theme-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+
+  max-width: 0; 
+  overflow: hidden;
+  opacity: 0;
+  
+  transition: max-width 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+
+.theme-list.open {
+  max-width: 500px; 
+  opacity: 1;
+  overflow-x: auto; 
+  overflow-y: hidden;
+  pointer-events: auto;
+}
+
+.theme-list::-webkit-scrollbar {
+    display: none;
+}
+
+.panel {
+  padding: 20px;
+  background-color: rgba(240, 242, 245, 0.5);
+  min-height: 100vh;
+  min-width: 45vh;
+  border-radius: 40px;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #1e1e1e;
+}
+
+/* header-control */
+.controls {
+  margin-bottom: 20px;
+}
+
+.grid-container {
+  padding: 20px;
+}
+
+.react-grid-layout {
+  background-color: transparent;
+}
+
+.chart-item {
+  border: 1px solid #e0e0e0;
+  background-color: rgba(240, 242, 245, 0.3);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.chart-content {
+  height: 100%; 
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  box-sizing: border-box; 
+}
+
+.chart-drag-handle {
+  height: 7%;
+  width: 100%;
+  min-height: 20px;
+  -webkit-user-select: none;
+  user-select: none;
+  font-size: 1rem;
+}
+
+.echarts-for-react {
+  width: 100%;
+  height: 100%;
+}
+
+.remove-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--background-color);
+  color: #eeeeee;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 9999;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  line-height: 1;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.5s ease-in-out, width 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.remove-button:hover {
+  background-color: #ff7875;
+}
+
+/* Input and Subscribe button */
+.controls {
+  margin-top: 15px;
+}
+
+.underline-input-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.underline-input-wrapper {
+  flex: 1;
+  position: relative;
+  min-width: 90px;
+}
+
+.underline-input {
+  width: 70%;
+  border: none;
+  border-bottom: 2px solid #ddd;
+  padding: 8px 0;
+  font-size: 16px;
+  background: transparent;
+  transition: border-bottom-color 0.3s ease;
+}
+
+.underline-input:focus {
+  outline: none;
+  border-bottom-color: var(--primary-color);
+}
+
+.underline-input::placeholder {
+  color: #aaa;
+}
+
+.underline-label {
+  position: absolute;
+  margin-left: 2px;
+  left: 15%;
+  bottom: 12px;
+  font-size: clamp(0.8rem, 1.5vw, 2rem);
+  color: #eeeeee;
+  pointer-events: none;
+  transition: transform 0.3s ease, font-size 0.3s ease, color 0.3s ease;
+}
+
+.underline-input:focus + .underline-label,
+
+.underline-input:not(:placeholder-shown) + .underline-label {
+  transform: translateY(-20px);
+  font-size: clamp(0.65rem, 1.1vw, 1.5rem);;
+  color: var(--primary-color);
+}
+
+.underline-button-group {
+  margin: 23px;
+}
+
+.underline-button {
+  width: 15%;
+  min-width: 120px;
+  padding: 8px 20px;
+  background-color: var(--background-color);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #eeeeee;
+  border: none;
+  border-radius: 20px;
+  font-size: clamp(0.8rem, 1.5vw, 2rem);
+  cursor: pointer;
+  transition: background-color 0.5s ease-in-out, width 0.5s ease-in-out, color 0.5s ease-in-out;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.underline-button:hover {
+  background-color: var(--primary-color-hover); 
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.underline-button.success {
+  background-color: #91cc75;
+  width: 20%;
+}
+
+.underline-button.failure {
+  background-color: #ff7875;
+  width: 20%;
+}
+
+.underline-button.export {
+  margin-left: 10px;
+}
+
+.underline-button.import-label {
+  margin-left: 10px; 
+}
+
+.underline-button.import-file {
+  display: none;
+}
