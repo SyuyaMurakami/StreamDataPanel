@@ -29,8 +29,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 _manager: WebsocketManager | None = None
 
 def start_config_load():
-    from .configEdit import configLoad
-    config = configLoad()
+    from .configEdit import config_load
+    config = config_load()
 
     host = config['WEBSOCKET_CONFIG']['HOST']
     port = config['WEBSOCKET_CONFIG']['PORT']
