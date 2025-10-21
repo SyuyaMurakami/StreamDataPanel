@@ -3,10 +3,12 @@ import threading
 import json
 import logging
 import atexit
+from datetime import datetime
 from typing import Dict, Any, Callable
-from apiCore import WebsocketManager
+from .apiCore import WebsocketManager
 
 __all__ = [
+    'start',
     'restart',
     'Line',
     'Bar',
@@ -27,10 +29,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 _manager: WebsocketManager | None = None
 
 def start_config_load():
-    pathJson = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json' )
-
-    with open(pathJson, 'r', encoding='utf-8') as f:
-        config = json.load(f)
+    from .configEdit import configLoad
+    config = configLoad()
 
     host = config['WEBSOCKET_CONFIG']['HOST']
     port = config['WEBSOCKET_CONFIG']['PORT']
@@ -77,11 +77,10 @@ def restart(host: str | None=None, port: str | None=None, route: str | None=None
     if _manager is not None:
         logging.info("Data service is already running, restarting...")
         _manager = None
-        return start(host=host, port=port, route=route)
     else:
-        return _manager
+        logging.info("Data service is not running, starting...")
+    return start(host=host, port=port, route=route)
 
-start()
 
 class DataStream:
     """
@@ -178,7 +177,7 @@ class DataStream:
 
 
     def __init__(self, key_word: str, chart_type: str):
-        self.key_word = key_word
+        self.key_word = key_word.strip().lower()
         self.chart_type = chart_type
         self.data_key = self._get_data_key()
         
@@ -219,6 +218,15 @@ class DataStream:
         
         thread.start()
         logging.info(f"{self.chart_type}('{self.data_key}') calls {logic_func.__name__} in background (daemon) thread.")
+
+    def fresh(self, data_payload_value: Any):
+        data_payload = {
+            "id": datetime.now().strftime("%Y%m%d%H%M%S%f"),
+            "timestamp": datetime.now().isoformat(),
+            "value": data_payload_value
+        }
+        self.update(data_payload)
+
 
 class Line(DataStream):
     def __init__(self, key_word: str):

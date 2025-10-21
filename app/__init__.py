@@ -5,21 +5,35 @@ import os
 import logging
 
 from .configEdit import configLoad
+from .api import start
+
+start()
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-config = configLoad()
+CONFIG = configLoad()
 
-APP_CONFIG = config['APP_CONFIG']
+APP_CONFIG = CONFIG['APP_CONFIG']
 
-EEL_CONFIG = config['EEL_CONFIG']
+EEL_CONFIG = CONFIG['EEL_CONFIG']
+
+def thread_target(func, *func_args, **func_kwargs):
+    try:
+        func(*func_args, **func_kwargs)
+    except BaseException as e: 
+        if isinstance(e, (SystemExit, KeyboardInterrupt)):
+            logging.info(f"Thread received shutdown signal ({e.__class__.__name__}).")
+        else:
+            logging.error(f"Error in background thread: {e}", exc_info=True)
+    finally:
+        logging.info(f"Thread finished.")
 
 @eel.expose
 def get_initial_config():
     logging.info("Initializing...")
     return APP_CONFIG
 
-def run():
+def run_app():
     if os.environ.get('EEL_DEVELOPMENT_MODE') == 'true':
         port = EEL_CONFIG['PORT_DEV']
         logging.info(f"Running in Development Mode, Port: {port}")
@@ -31,26 +45,21 @@ def run():
         eel.init(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'web'))
         eel.start('index.html', size=size, mode='default', port=port)
 
-def simulate():
-    from .apiTest import simulateAll
-    simulateAll()
+def init_app():
+    from threading import Thread
+    app = Thread(target=thread_target, args=(run_app,), daemon=True)
+    app.start()
+
+def init_simulate():
+    from .apiTest import simulate_all
+    simulate_all()
 
 def test():
     from time import sleep
     from threading import Thread
-
-    def thread_target(func, *func_args, **func_kwargs):
-        try:
-            func(*func_args, **func_kwargs)
-        except Exception as e:
-            logging.error(f"Error in background thread: {e}")
-        finally:
-            logging.info(f"Thread finished.")
-
-    front = Thread(target=run, daemon=True)
-    front.start()
-    backend = Thread(target=simulate, daemon=True)
-    backend.start()
+    
+    init_app()
+    init_simulate()
 
     try:
         logging.info('Running test...')

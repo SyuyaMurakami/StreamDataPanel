@@ -14,7 +14,10 @@
     "EEL_CONFIG": {
         "PORT_DEV": 5174,
         "PORT": 9001,
-        "SIZE": [800, 600]
+        "SIZE": [
+            800,
+            600
+        ]
     },
     "WEBSOCKET_CONFIG": {
         "HOST": "localhost",

@@ -1,1 +1,0 @@
-EEL_DEVELOPMENT_MODE=true python3 run.py

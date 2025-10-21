@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 async def _simulate_initial_data_fetch(data_key: str, cache_data: Dict[str, Any], all_valid_keys: Set[str]):
     """Simulates data check and retrieval upon frontend subscription"""
     if data_key not in all_valid_keys:
+        logger.error(f'Subscribed key does not exist. Subscribed as {data_key}, Validated keys are {all_valid_keys}')
         return None # Subscribed key does not exist
         
     if data_key in cache_data:
