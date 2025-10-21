@@ -5,9 +5,7 @@ import os
 import logging
 
 from .configEdit import configLoad
-from .api import start
-
-start()
+from .api import *
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -33,8 +31,8 @@ def get_initial_config():
     logging.info("Initializing...")
     return APP_CONFIG
 
-def run_app():
-    if os.environ.get('EEL_DEVELOPMENT_MODE') == 'true':
+def run_app(dev: bool=False):
+    if dev:
         port = EEL_CONFIG['PORT_DEV']
         logging.info(f"Running in Development Mode, Port: {port}")
         eel.init('')
@@ -45,13 +43,14 @@ def run_app():
         eel.init(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'web'))
         eel.start('index.html', size=size, mode='default', port=port)
 
-def init_app():
+def init_app(dev: bool=False):
     from threading import Thread
-    app = Thread(target=thread_target, args=(run_app,), daemon=True)
+    app = Thread(target=thread_target, args=(run_app,), kwargs={'dev': dev}, daemon=True)
     app.start()
 
 def init_simulate():
     from .apiTest import simulate_all
+    start_api()
     simulate_all()
 
 def test():

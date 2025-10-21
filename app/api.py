@@ -8,8 +8,8 @@ from typing import Dict, Any, Callable
 from .apiCore import WebsocketManager
 
 __all__ = [
-    'start',
-    'restart',
+    'start_api',
+    'restart_api',
     'Line',
     'Bar',
     'Sequence',
@@ -59,7 +59,7 @@ def start_manager(host: str, port: str, route: str):
 
     return _manager
 
-def start(host: str | None=None, port: str | None=None, route: str | None=None):
+def start_api(host: str | None=None, port: str | None=None, route: str | None=None):
 
     global _manager
     
@@ -70,7 +70,7 @@ def start(host: str | None=None, port: str | None=None, route: str | None=None):
         host, port, route = start_config_check(host, port, route)
         return start_manager(host, port, route)
 
-def restart(host: str | None=None, port: str | None=None, route: str | None=None):
+def restart_api(host: str | None=None, port: str | None=None, route: str | None=None):
 
     global _manager
 
@@ -79,7 +79,7 @@ def restart(host: str | None=None, port: str | None=None, route: str | None=None
         _manager = None
     else:
         logging.info("Data service is not running, starting...")
-    return start(host=host, port=port, route=route)
+    return start_api(host=host, port=port, route=route)
 
 
 class DataStream:

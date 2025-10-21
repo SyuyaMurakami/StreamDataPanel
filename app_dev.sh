@@ -1,1 +1,1 @@
-EEL_DEVELOPMENT_MODE=true python3 -m app
+python3 -m app -d

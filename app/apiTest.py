@@ -53,6 +53,7 @@ def simulate(chart, chart_type, num=20000, freq=0.1):
         time.sleep(freq)
 
 def simulate_all():
+    """API Server must be initialized before call this function."""
     chart_obj_list = [Sequence, Line, Bar, Sequences, Lines, Bars, Scatter, Area, Areas, Pie, Radar, Surface]
     key_word_list = ['test' for _ in chart_obj_list]
     chart_type_list = ['sequence', 'line', 'bar', 'sequences', 'lines', 'bars', 'scatter', 'area', 'areas', 'pie', 'radar', 'surface']
