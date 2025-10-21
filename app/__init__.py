@@ -2,14 +2,15 @@
 #coding = utf-8
 import eel
 import os
+import argparse
 import logging
 
-from .configEdit import configLoad
+from .configEdit import config_load, config_reset, config_update
 from .api import *
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-CONFIG = configLoad()
+CONFIG = config_load()
 
 APP_CONFIG = CONFIG['APP_CONFIG']
 
@@ -31,7 +32,12 @@ def get_initial_config():
     logging.info("Initializing...")
     return APP_CONFIG
 
-def run_app(dev: bool=False):
+def run_app(dev: bool=None):
+    if dev is None:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-d', '--dev', action='store_true', help='start with dev mode')
+        args = parser.parse_args()
+        dev = args.dev
     if dev:
         port = EEL_CONFIG['PORT_DEV']
         logging.info(f"Running in Development Mode, Port: {port}")
@@ -43,7 +49,12 @@ def run_app(dev: bool=False):
         eel.init(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'web'))
         eel.start('index.html', size=size, mode='default', port=port)
 
-def init_app(dev: bool=False):
+def init_app(dev: bool=None):
+    if dev is None:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-d', '--dev', action='store_true', help='start with dev mode')
+        args = parser.parse_args()
+        dev = args.dev
     from threading import Thread
     app = Thread(target=thread_target, args=(run_app,), kwargs={'dev': dev}, daemon=True)
     app.start()
@@ -65,4 +76,24 @@ def test():
         sleep(300)
     except KeyboardInterrupt:
         logging.info("Test terminated.")
+
+def set_config(config_type: str=None, config_item: str=None, config_value: str | int=None):
+    if config_type is None and config_item is None and config_value is None:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('config_type', help='it should be APP_CONFIG or VITE_CONFIG or EEL_CONFIG or WEBSOCKET_CONFIG, etc')
+        parser.add_argument('config_item', help='it should be PORT or TITLE, etc. print config to see which can be used')
+        parser.add_argument('config_value', help='it should be a string or a number')
+        args = parser.parse_args()
+        config_type = args.config_type
+        config_item = args.config_item
+        config_value = args.config_value
+    config_update(config_type, config_item, config_value)
+
+def show_config():
+    content = config_load()
+    print(content)
+
+def reset_config():
+    config_reset()
+
 
