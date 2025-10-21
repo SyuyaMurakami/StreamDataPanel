@@ -3,6 +3,7 @@ import threading
 import json
 import logging
 import atexit
+from datetime import datetime
 from typing import Dict, Any, Callable
 from .apiCore import WebsocketManager
 
@@ -219,6 +220,15 @@ class DataStream:
         
         thread.start()
         logging.info(f"{self.chart_type}('{self.data_key}') calls {logic_func.__name__} in background (daemon) thread.")
+
+    def fresh(self, data_payload_value: Any):
+        data_payload = {
+            "id": datetime.now().strftime("%Y%m%d%H%M%S%f"),
+            "timestamp": datetime.now().isoformat(),
+            "value": data_payload_value
+        }
+        self.update(data_payload)
+
 
 class Line(DataStream):
     def __init__(self, key_word: str):
