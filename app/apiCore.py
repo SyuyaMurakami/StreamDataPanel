@@ -3,7 +3,7 @@ import asyncio
 import threading
 import json
 import logging
-from typing import Dict, Any, Set, Deque, Callable, Awaitable
+from typing import Union, Dict, Any, Set, Deque, Callable, Awaitable
 from collections import deque
 from websockets.server import serve, WebSocketServerProtocol
 from websockets.exceptions import ConnectionClosedOK, ConnectionClosedError
@@ -74,7 +74,7 @@ class WebsocketManager:
              # Wakes up the background thread to process data
             self.loop.call_soon_threadsafe(self._update_event.set)
     
-    def get_cached_data_sync(self, data_key: str) -> Dict[str, Any] | None:
+    def get_cached_data_sync(self, data_key: str) -> Union[Dict[str, Any], None]:
         """Reads the cache"""
         with self._lock:
             return self._cache.get(data_key)

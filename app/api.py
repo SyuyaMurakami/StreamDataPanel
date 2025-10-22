@@ -4,7 +4,7 @@ import json
 import logging
 import atexit
 from datetime import datetime
-from typing import Dict, Any, Callable
+from typing import Optional, Union, Dict, Any, Callable
 from .apiCore import WebsocketManager
 
 __all__ = [
@@ -26,7 +26,7 @@ __all__ = [
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-_manager: WebsocketManager | None = None
+_manager: Union[WebsocketManager, None] = None
 
 def start_config_load():
     from .configEdit import config_load
@@ -38,7 +38,7 @@ def start_config_load():
 
     return host, port, route
 
-def start_config_check(host: str | None, port: str | None, route: str | None):
+def start_config_check(host: Union[str, None], port: Union[str, None], route: Union[str, None]):
     if host is None or port is None or route is None:
         hostDefault, portDefault, routeDefault = start_config_load()
         host = hostDefault if host is None else host
@@ -59,7 +59,7 @@ def start_manager(host: str, port: str, route: str):
 
     return _manager
 
-def start_api(host: str | None=None, port: str | None=None, route: str | None=None):
+def start_api(host: Optional[str]=None, port: Optional[str]=None, route: Optional[str]=None):
 
     global _manager
     
@@ -70,7 +70,7 @@ def start_api(host: str | None=None, port: str | None=None, route: str | None=No
         host, port, route = start_config_check(host, port, route)
         return start_manager(host, port, route)
 
-def restart_api(host: str | None=None, port: str | None=None, route: str | None=None):
+def restart_api(host: Optional[str]=None, port: Optional[str]=None, route: Optional[str]=None):
 
     global _manager
 
@@ -195,7 +195,7 @@ class DataStream:
         _manager.push_update_sync(self.data_key, data_payload)
         logging.debug(f"Pushed update for {self.chart_type} -> {self.key_word}")
 
-    def get_cached_data(self) -> Dict[str, Any] | None:
+    def get_cached_data(self) -> Union[Dict[str, Any], None]:
         return _manager.get_cached_data_sync(self.data_key)
     
     def execute(self, logic_func: Callable, *args, **kwargs):

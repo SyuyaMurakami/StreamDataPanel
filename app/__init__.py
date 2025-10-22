@@ -5,6 +5,7 @@ import os
 import argparse
 import logging
 
+from typing import Union, Optional
 from .configEdit import config_load, config_reset, config_update
 from .api import *
 
@@ -77,7 +78,7 @@ def test():
     except KeyboardInterrupt:
         logging.info("Test terminated.")
 
-def set_config(config_type: str=None, config_item: str=None, config_value: str | int=None):
+def set_config(config_type: str=None, config_item: str=None, config_value: Optional[Union[str, int]]=None):
     if config_type is None and config_item is None and config_value is None:
         parser = argparse.ArgumentParser()
         parser.add_argument('config_type', help='it should be APP_CONFIG or VITE_CONFIG or EEL_CONFIG or WEBSOCKET_CONFIG, etc')

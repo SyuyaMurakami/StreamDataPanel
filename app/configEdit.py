@@ -1,5 +1,6 @@
 import os
 import json
+from typing import Union
 
 path_current = os.path.dirname(os.path.abspath(__file__))
 path_config = os.path.join(path_current, 'config.json' )
@@ -24,11 +25,11 @@ def config_reset():
     default = config_load_from(path_config_default)
     config_save(default)
 
-def config_update_by(content: dict, config_type: str, config_item: str, config_value: str | int):
+def config_update_by(content: dict, config_type: str, config_item: str, config_value: Union[str, int]):
     content[config_type][config_item] = config_value
     return content
 
-def config_update(config_type: str, config_item: str, config_value: str | int):
+def config_update(config_type: str, config_item: str, config_value: Union[str, int]):
     content = config_load()
     content = config_update_by(content, config_type, config_item, config_value)
     config_save(content)

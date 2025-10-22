@@ -264,6 +264,7 @@
 }
 
 .underline-input {
+  color: var(--text-color);
   width: 70%;
   border: none;
   border-bottom: 2px solid #ddd;
