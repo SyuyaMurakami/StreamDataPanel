@@ -64,7 +64,7 @@ const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
 
-  const [currentThemeName, setCurrentThemeName] = useState('grape'); 
+  const [currentThemeName, setCurrentThemeName] = useState('night'); 
   const theme = allThemes[currentThemeName]; 
 
   useEffect(() => {

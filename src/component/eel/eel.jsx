@@ -2,7 +2,7 @@
 
 let config = {
 	WEB_SOCKET: 'ws://localhost:9005/ws',
-	TITLE: 'Real-Time Data Panel',
+	TITLE: 'Stream Data Panel',
 	CHART_TYPE: 'ChartType',
 	KEY_WORD: 'KeyWord',
 	SUBSCRIBE: 'SUBSCRIBE',
