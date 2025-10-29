@@ -405,4 +405,27 @@ export const chartConfigs = {
             shading: ChartConst.SURFACE_SERIES_SHADING,
         }],
     }),
+    // Configuration for a Text chart
+    text: (data, title, theme) => ({
+        title: getBaseOptions(title, theme).title,
+        backgroundColor: ChartConst.BACKGROUND_COLOR,
+        tooltip: { show: false },
+        graphic: [
+            {
+                type: 'text',
+                left: ChartConst.TEXT_CHART_LEFT,
+                top: ChartConst.TEXT_CHART_TOP,
+                style: {
+                    text: data && data.value ? data.value : '',
+                    fill: theme?.['--primary-color'] || ChartConst.FONT_COLOR,
+                    fontSize: ChartConst.TEXT_CHART_FONT_SIZE, 
+                    fontWeight: ChartConst.TEXT_CHART_FONT_WEIGHT,
+                    textAlign: ChartConst.TEXT_CHART_FONT_ALIGN,
+                    textVerticalAlign: ChartConst.TEXT_CHART_FONT_VERTICAL_ALIGN,
+                    lineHeight: ChartConst.TEXT_CHART_LINE_HEIGHT,
+                },
+                zlevel: 10, 
+            }
+        ]
+    }),
 };

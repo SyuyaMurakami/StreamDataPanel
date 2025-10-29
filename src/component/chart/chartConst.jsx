@@ -1,7 +1,7 @@
 // src/component/chart/chartConst.jsx
 
 // Chart Type
-export const GLOBAL_UPDATE_CHART = new Set(['surface', 'radar', 'area', 'areas', 'pie']);
+export const GLOBAL_UPDATE_CHART = new Set(['surface', 'radar', 'area', 'areas', 'pie', 'text']);
 export const SEQUENCE_UPDATE_CHART = new Set(['line', 'lines', 'bar', 'bars', 'sequence', 'sequences', 'scatter']);
 
 // General Setting
@@ -94,9 +94,14 @@ export const SURFACE_VISUALMAP_INRANGE_COLOR = [ '#5470c6', '#73c0de',  '#abd9e9
 export const SURFACE_SERIES_WIREFRAME_SHOW = false;
 export const SURFACE_SERIES_SHADING = 'color';
 
-
-
-
+// Text Chart
+export const TEXT_CHART_LEFT = 'center';
+export const TEXT_CHART_TOP = 'center';
+export const TEXT_CHART_FONT_SIZE = 'clamp(0.9rem, 1.8vw, 2.5rem)';
+export const TEXT_CHART_FONT_WEIGHT = 'bold';
+export const TEXT_CHART_FONT_ALIGN = 'center';
+export const TEXT_CHART_FONT_VERTICAL_ALIGN = 'middle';
+export const TEXT_CHART_LINE_HEIGHT = 30;
 
 
 

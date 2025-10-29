@@ -22,6 +22,7 @@ __all__ = [
     'Pie',
     'Radar',
     'Surface',
+    'Text',
 ]
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -223,6 +224,28 @@ class DataStream:
         """    
         from numbers import Number
         if DataStream._data_validated(data_payload) and isinstance(data_payload['value'], Number):
+            return True
+        else:
+            return False
+    
+    @staticmethod
+    def _data_validated_string(data_payload: Any):
+        """
+        _data_validated_string() is a static method to validate the payload structure 
+        and ensure the 'value' field is a string type.
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if validation passes, otherwise False.
+
+        """
+        if DataStream._data_validated(data_payload) and type(data_payload['value']) is str:
             return True
         else:
             return False
@@ -779,4 +802,24 @@ class Surface(DataStream):
         else:
             super().update(data_payload)
 
+class Text(DataStream):
+    def __init__(self, key_word: str):
+        super().__init__(key_word, chart_type='text')
+
+    def update(self, data_payload: Dict[str, Any]):
+        """
+        update() is the data update function for the Text chart.
+        It validates that the 'value' field in the payload is a string.
+
+        Parameters
+        ----------
+        data_payload : Dict[str, Any]
+            The data payload dictionary. Expected format: 
+            {id:xxx, timestamp:xxx, value:some_string}
+
+        """
+        if not DataStream._data_validated_string(data_payload):
+            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:some_string}")
+        else:
+            super().update(data_payload)
 
