@@ -428,4 +428,75 @@ export const chartConfigs = {
             }
         ]
     }),
+    // Configuration for a Gauge chart
+    gauge: (data, title, theme) => ({
+        title: getBaseOptions(title, theme).title,
+        backgroundColor: ChartConst.BACKGROUND_COLOR,
+        series: [
+            {
+                type: 'gauge',
+                center: ['50%', '70%'],
+                radius: '90%',
+                startAngle: 210,
+                endAngle: -30,
+                min: data.value[1][0],
+                max: data.value[1][1],
+                splitNumber: 4,
+                axisLine: {
+                    lineStyle: {
+                        width: 25,
+                        color: [
+                            [0.25, '#91cc75'],
+                            [0.50, '#fac858'],
+                            [0.75, '#fc8452'],
+                            [1.00, '#ee6666']
+                        ]
+                    }
+                },
+                axisTick: {
+                    length: 10,
+                    lineStyle: {color: 'auto'}
+                },
+                splitLine: {
+                    length: 20,
+                    lineStyle: {color: 'auto'}
+                },
+                axisLabel: {
+                    distance: 50,
+                    formatter: function (value) {
+                        if (value <= data.value[1][0] + (data.value[1][1] - data.value[1][0]) * 0.25) {
+                            return '{green|' + value.toFixed(2) + '}';
+                        } else if (value <= data.value[1][0] + (data.value[1][1] - data.value[1][0]) * 0.50) {
+                            return '{yellow|' + value.toFixed(2) + '}';
+                        } else if (value <= data.value[1][0] + (data.value[1][1] - data.value[1][0]) * 0.75) {
+                            return '{orange|' + value.toFixed(2) + '}';
+                        } else {
+                            return '{red|' + value.toFixed(2) + '}';
+                        }
+                    },
+                    rich: {
+                        green: { color: '#91cc75' },
+                        yellow: { color: '#fac858' },
+                        orange: { color: '#fc8452' },
+                        red: { color: '#ee6666' },
+                    },
+                },
+                pointer: { width: 5 },
+                title: {
+                    color: theme?.['--primary-color'],
+                    fontSize: 16,
+                    offsetCenter: [0, '20%']
+                },
+                detail: {
+                    valueAnimation: true,
+                    fontSize: 20,
+                    color: theme?.['--primary-color'],
+                    formatter: function (value) {
+                        return value.toFixed(2)
+                    },
+                },
+                data: [{value: data.value[2], name: data.value[0]}]
+            }
+        ]
+    }),
 };

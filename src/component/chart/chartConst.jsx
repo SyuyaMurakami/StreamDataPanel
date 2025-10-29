@@ -1,7 +1,7 @@
 // src/component/chart/chartConst.jsx
 
 // Chart Type
-export const GLOBAL_UPDATE_CHART = new Set(['surface', 'radar', 'area', 'areas', 'pie', 'text']);
+export const GLOBAL_UPDATE_CHART = new Set(['surface', 'radar', 'area', 'areas', 'pie', 'text', 'gauge']);
 export const SEQUENCE_UPDATE_CHART = new Set(['line', 'lines', 'bar', 'bars', 'sequence', 'sequences', 'scatter']);
 
 // General Setting

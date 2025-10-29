@@ -23,6 +23,7 @@ __all__ = [
     'Radar',
     'Surface',
     'Text',
+    'Gauge',
 ]
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -419,6 +420,36 @@ class DataStream:
         else:
             return False
 
+    @staticmethod
+    def _data_validated_gauge(data_payload: Any):
+        """
+        _data_validated_gauge() is a static method to validate the payload structure 
+        for gauge chart data format.
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if the payload has length 3 and the format is like ['A', [10, 100], 73], otherwise False.
+
+        """
+        from numbers import Number
+        if DataStream._data_validated_list(data_payload):
+            value = data_payload['value']
+            if len(value) == 3:
+                data_name, data_range, data_value = value
+                if type(data_name) is str and type(data_range) is list and len(data_range) == 2 and isinstance(data_value, Number):
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
 
     def __init__(self, key_word: str, chart_type: str):
         """
@@ -822,4 +853,30 @@ class Text(DataStream):
             logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:some_string}")
         else:
             super().update(data_payload)
+
+class Gauge(DataStream):
+    def __init__(self, key_word: str):
+        super().__init__(key_word, chart_type='gauge')
+
+    def update(self, data_payload: Dict[str, Any]):
+        """
+        update() is the data update function for the Gauge chart.
+        It validates the payload against the gauge chart data format.
+
+        Parameters
+        ----------
+        data_payload : Dict[str, Any]
+            The data payload dictionary. Expected format is:
+            {id:xxx, timestamp:xxx, value:['A', [10, 100], 73]}
+            - The first element of 'value' is used as name of data.
+            - The second element of 'value' is a list which is the min and max value of data range.
+            - The third element of 'value' is a number, representing 
+            the true value of your data.
+
+        """
+        if not DataStream._data_validated_gauge(data_payload):
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:['A', [10, 100], 73]}.")
+        else:
+            super().update(data_payload)
+
 
