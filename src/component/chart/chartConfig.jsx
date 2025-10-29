@@ -409,7 +409,6 @@ export const chartConfigs = {
     text: (data, title, theme) => ({
         title: getBaseOptions(title, theme).title,
         backgroundColor: ChartConst.BACKGROUND_COLOR,
-        tooltip: { show: false },
         graphic: [
             {
                 type: 'text',
@@ -424,79 +423,73 @@ export const chartConfigs = {
                     textVerticalAlign: ChartConst.TEXT_CHART_FONT_VERTICAL_ALIGN,
                     lineHeight: ChartConst.TEXT_CHART_LINE_HEIGHT,
                 },
-                zlevel: 10, 
+                zlevel: ChartConst.TEXT_CHART_Z_LEVEL, 
             }
         ]
     }),
     // Configuration for a Gauge chart
-    gauge: (data, title, theme) => ({
-        title: getBaseOptions(title, theme).title,
-        backgroundColor: ChartConst.BACKGROUND_COLOR,
-        series: [
-            {
-                type: 'gauge',
-                center: ['50%', '70%'],
-                radius: '90%',
-                startAngle: 210,
-                endAngle: -30,
-                min: data.value[1][0],
-                max: data.value[1][1],
-                splitNumber: 4,
-                axisLine: {
-                    lineStyle: {
-                        width: 25,
-                        color: [
-                            [0.25, '#91cc75'],
-                            [0.50, '#fac858'],
-                            [0.75, '#fc8452'],
-                            [1.00, '#ee6666']
-                        ]
-                    }
-                },
-                axisTick: {
-                    length: 10,
-                    lineStyle: {color: 'auto'}
-                },
-                splitLine: {
-                    length: 20,
-                    lineStyle: {color: 'auto'}
-                },
-                axisLabel: {
-                    distance: 50,
-                    formatter: function (value) {
-                        if (value <= data.value[1][0] + (data.value[1][1] - data.value[1][0]) * 0.25) {
-                            return '{green|' + value.toFixed(2) + '}';
-                        } else if (value <= data.value[1][0] + (data.value[1][1] - data.value[1][0]) * 0.50) {
-                            return '{yellow|' + value.toFixed(2) + '}';
-                        } else if (value <= data.value[1][0] + (data.value[1][1] - data.value[1][0]) * 0.75) {
-                            return '{orange|' + value.toFixed(2) + '}';
-                        } else {
-                            return '{red|' + value.toFixed(2) + '}';
-                        }
+    gauge: (data, title, theme) => {
+        const dataValueRangeList = data.value[1];
+        const dataValueMin = dataValueRangeList[0];
+        const dataValueMax = dataValueRangeList[1];
+        const dataValueRange = dataValueMax - dataValueMin;
+        const dataValueSplitOne = dataValueMin + dataValueRange * ChartConst.GAUGE_SPLIT[0];
+        const dataValueSplitTwo = dataValueMin + dataValueRange * ChartConst.GAUGE_SPLIT[1];
+        const dataValueSplitThree = dataValueMin + dataValueRange * ChartConst.GAUGE_SPLIT[2];
+
+        return {
+            title: getBaseOptions(title, theme).title,
+            backgroundColor: ChartConst.BACKGROUND_COLOR,
+            series: [
+                {
+                    type: 'gauge',
+                    center: ChartConst.GAUGE_CENTER,
+                    radius: ChartConst.GAUGE_RADIUS,
+                    startAngle: ChartConst.GAUGE_ANGLE[0],
+                    endAngle: ChartConst.GAUGE_ANGLE[1],
+                    min: dataValueMin,
+                    max: dataValueMax,
+                    splitNumber: ChartConst.GAUGE_SPLIT_NUMBER,
+                    axisLine: { lineStyle: { width: ChartConst.GAUGE_AXIS_LINE_WIDTH, color: ChartConst.GAUGE_AXIS_LINE_COLOR } },
+                    axisTick: { length: ChartConst.GAUGE_AXIS_TICK_LENGTH, lineStyle: { color: ChartConst.GAUGE_LINE_STYLE } },
+                    splitLine: { length: ChartConst.GAUGE_SPLIT_LINE_LENGTH, lineStyle: { color: ChartConst.GAUGE_LINE_STYLE } },
+                    axisLabel: {
+                        distance: ChartConst.GAUGE_AXIS_LABEL_DISTANCE,
+                        formatter: function (value) {
+                            if (value <= dataValueSplitOne) {
+                                return '{one|' + value.toFixed(2) + '}';
+                            } else if (value <= dataValueSplitTwo) {
+                                return '{two|' + value.toFixed(2) + '}';
+                            } else if (value <= dataValueSplitThree) {
+                                return '{three|' + value.toFixed(2) + '}';
+                            } else {
+                                return '{four|' + value.toFixed(2) + '}';
+                            }
+                        },
+                        rich: {
+                            one: { color: ChartConst.GAUGE_COLOR[0], fontSize: ChartConst.GAUGE_AXIS_LABEL_FONT_SIZE },
+                            two: { color: ChartConst.GAUGE_COLOR[1], fontSize: ChartConst.GAUGE_AXIS_LABEL_FONT_SIZE },
+                            three: { color: ChartConst.GAUGE_COLOR[2], fontSize: ChartConst.GAUGE_AXIS_LABEL_FONT_SIZE },
+                            four: { color: ChartConst.GAUGE_COLOR[3], fontSize: ChartConst.GAUGE_AXIS_LABEL_FONT_SIZE },
+                        },
                     },
-                    rich: {
-                        green: { color: '#91cc75' },
-                        yellow: { color: '#fac858' },
-                        orange: { color: '#fc8452' },
-                        red: { color: '#ee6666' },
+                    pointer: { width: ChartConst.GAUGE_POINTER_WIDTH },
+                    title: {
+                        color: theme?.['--primary-color'],
+                        fontSize: ChartConst.GAUGE_TITLE_FONT_SIZE,
+                        offsetCenter: ChartConst.GAUGE_TITLE_OFFSET_CENTER,
+                        fontWeight: ChartConst.GAUGE_TITLE_FONT_WEIGHT,
                     },
-                },
-                pointer: { width: 5 },
-                title: {
-                    color: theme?.['--primary-color'],
-                    fontSize: 16,
-                    offsetCenter: [0, '20%']
-                },
-                detail: {
-                    valueAnimation: true,
-                    fontSize: 20,
-                    color: theme?.['--primary-color'],
-                    formatter: function (value) {
-                        return value.toFixed(2)
+                    detail: {
+                        valueAnimation: true,
+                        fontSize: ChartConst.GAUGE_DETAIL_FONT_SIZE,
+                        color: theme?.['--primary-color'],
+                        offsetCenter: ChartConst.GAUGE_DETAIL_OFFSET_CENTER,
+                        formatter: function (value) { return value.toFixed(2) },
                     },
-                },
-                data: [{value: data.value[2], name: data.value[0]}]
-            }
-        ]
-    }),
+                    data: [{value: data.value[2], name: data.value[0]}]
+                }
+            ]
+        }
+    },
 };

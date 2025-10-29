@@ -97,11 +97,31 @@ export const SURFACE_SERIES_SHADING = 'color';
 // Text Chart
 export const TEXT_CHART_LEFT = 'center';
 export const TEXT_CHART_TOP = 'center';
-export const TEXT_CHART_FONT_SIZE = 'clamp(0.9rem, 1.8vw, 2.5rem)';
+export const TEXT_CHART_FONT_SIZE = 'clamp(1.2rem, 1.6vw, 2.2rem)';
 export const TEXT_CHART_FONT_WEIGHT = 'bold';
 export const TEXT_CHART_FONT_ALIGN = 'center';
 export const TEXT_CHART_FONT_VERTICAL_ALIGN = 'middle';
-export const TEXT_CHART_LINE_HEIGHT = 30;
+export const TEXT_CHART_LINE_HEIGHT = 40;
+export const TEXT_CHART_Z_LEVEL = 10;
 
-
+// Gauge Chart
+export const GAUGE_CENTER = ['50%', '55%'];
+export const GAUGE_RADIUS = '90%';
+export const GAUGE_ANGLE = [210, -30];
+export const GAUGE_SPLIT_NUMBER = 4;
+export const GAUGE_SPLIT = [0.25, 0.5, 0.75, 1];
+export const GAUGE_COLOR = ['#91cc75', '#fac858', '#fc8452', '#ee6666'];
+export const GAUGE_AXIS_LINE_COLOR = [[0.25, '#91cc75'], [0.50, '#fac858'], [0.75, '#fc8452'], [1.00, '#ee6666']];
+export const GAUGE_AXIS_LINE_WIDTH = 15;
+export const GAUGE_AXIS_TICK_LENGTH = 10;
+export const GAUGE_AXIS_LABEL_FONT_SIZE = 'clamp(0.6rem, 0.8vw, 1.0rem)';
+export const GAUGE_AXIS_LABEL_DISTANCE = 30;
+export const GAUGE_SPLIT_LINE_LENGTH = 20;
+export const GAUGE_LINE_STYLE = 'auto';
+export const GAUGE_POINTER_WIDTH = 5;
+export const GAUGE_TITLE_FONT_SIZE = 'clamp(0.9rem, 0.8vw, 1.5rem)';
+export const GAUGE_TITLE_FONT_WEIGHT = 'bold';
+export const GAUGE_TITLE_OFFSET_CENTER = [0, '40%'];
+export const GAUGE_DETAIL_FONT_SIZE = 'clamp(0.9rem, 0.8vw, 1.5rem)';
+export const GAUGE_DETAIL_OFFSET_CENTER = [0, '60%'];
 
