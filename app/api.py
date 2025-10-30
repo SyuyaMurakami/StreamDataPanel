@@ -183,273 +183,6 @@ class DataStream:
     Abstract class for data streams, defines the synchronous interface
     that users can call.
     """
-    @staticmethod
-    def _data_validated(data_payload: Any):
-        """
-        _data_validated() is a static method to validate if the data payload 
-        contains the essential structure keys ('id', 'timestamp', 'value').
-
-        Parameters
-        ----------
-        data_payload : Any
-            The data payload to be validated, typically expected to be a dictionary.
-
-        Returns
-        -------
-        bool
-            Returns True if the payload is a valid dictionary and contains 
-            'id', 'timestamp', and 'value' keys, otherwise False.
-
-        """ 
-        if (not isinstance(data_payload, dict)) or ("id" not in data_payload) or ("timestamp" not in data_payload) or ("value" not in data_payload):
-            return False
-        else:
-            return True
-
-    @staticmethod
-    def _data_validated_number(data_payload: Any):
-        """
-        _data_validated_number() is a static method to validate the payload structure 
-        and ensure the 'value' field is a numerical type.
-
-        Parameters
-        ----------
-        data_payload : Any
-            The data payload to be validated.
-
-        Returns
-        -------
-        bool
-            Returns True if validation passes, otherwise False.
-
-        """    
-        from numbers import Number
-        if DataStream._data_validated(data_payload) and isinstance(data_payload['value'], Number):
-            return True
-        else:
-            return False
-    
-    @staticmethod
-    def _data_validated_string(data_payload: Any):
-        """
-        _data_validated_string() is a static method to validate the payload structure 
-        and ensure the 'value' field is a string type.
-
-        Parameters
-        ----------
-        data_payload : Any
-            The data payload to be validated.
-
-        Returns
-        -------
-        bool
-            Returns True if validation passes, otherwise False.
-
-        """
-        if DataStream._data_validated(data_payload) and type(data_payload['value']) is str:
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def _data_validated_dict(data_payload: Any):
-        """
-        _data_validated_dict() is a static method to validate the payload structure 
-        and ensure the 'value' field is a dictionary type.
-
-        Parameters
-        ----------
-        data_payload : Any
-            The data payload to be validated.
-
-        Returns
-        -------
-        bool
-            Returns True if validation passes, otherwise False.
-
-        """      
-        if DataStream._data_validated(data_payload) and isinstance(data_payload['value'], dict):
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def _data_validated_list(data_payload: Any):
-        """
-        _data_validated_list() is a static method to validate the payload structure 
-        and ensure the 'value' field is a list type.
-
-        Parameters
-        ----------
-        data_payload : Any
-            The data payload to be validated.
-
-        Returns
-        -------
-        bool
-            Returns True if validation passes, otherwise False.
-
-        """    
-
-        if DataStream._data_validated(data_payload) and isinstance(data_payload['value'], list):
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def _data_validated_coordinate(data_payload: Any):
-        """
-        _data_validated_coordinate() is a static method to validate the payload structure 
-        and ensure the 'value' field is a list of length 2 containing numbers (coordinate).
-
-        Parameters
-        ----------
-        data_payload : Any
-            The data payload to be validated.
-
-        Returns
-        -------
-        bool
-            Returns True if validation passes, otherwise False.
-
-        """    
-        from numbers import Number
-        if DataStream._data_validated_list(data_payload):
-            value = data_payload['value']
-            if len(value) == 2:
-                x, y = value
-                if isinstance(x, Number) and isinstance(y, Number):
-                    return True
-                else:
-                    return False
-            else:
-                return False 
-        else:
-            return False
-
-    @staticmethod
-    def _data_validated_dimension(data_payload: Any):
-        """
-        _data_validated_dimension() is a static method to validate the payload structure 
-        for single-series chart data (e.g., Area, Pie) format: 
-        [[dimension_labels], [numerical_values]].
-
-        Parameters
-        ----------
-        data_payload : Any
-            The data payload to be validated.
-
-        Returns
-        -------
-        bool
-            Returns True if the payload is a list of length 2, where both elements 
-            are lists of equal length, otherwise False.
-
-        """
-        if DataStream._data_validated_list(data_payload):
-            value = data_payload['value']
-            if len(value) == 2:
-                dimension, num = value
-                if isinstance(dimension, list) and isinstance(num, list) and len(dimension) == len(num):
-                    return True
-                else:
-                    return False
-            return False
-        else:
-            return False
-
-    @staticmethod
-    def _data_validated_dimensions(data_payload: Any):
-        """
-        _data_validated_dimensions() is a static method to validate the payload structure 
-        for multi-series chart data (e.g., Areas, Radar) format: 
-        [[dimension_labels], [series_labels], [numerical_list_of_lists]].
-
-        Parameters
-        ----------
-        data_payload : Any
-            The data payload to be validated.
-
-        Returns
-        -------
-        bool
-            Returns True if the payload is a list of length 3, and the lengths of 
-            series labels and numerical lists match, otherwise False.
-
-        """
-        if DataStream._data_validated_list(data_payload):
-            value = data_payload['value']
-            if len(value) == 3:
-                dimension, series, num = value
-                if isinstance(dimension, list) and isinstance(series, list)  and isinstance(num, list) and len(series) == len(num):
-                    return True
-                else:
-                    return False
-            return False
-        else:
-            return False
-
-    @staticmethod
-    def _data_validated_surface(data_payload: Any):
-        """
-        _data_validated_surface() is a static method to validate the payload structure 
-        for 3D Surface chart data format.
-
-        Parameters
-        ----------
-        data_payload : Any
-            The data payload to be validated.
-
-        Returns
-        -------
-        bool
-            Returns True if the payload has length 3 and the dimensions/shape 
-            metrics are consistent, otherwise False.
-
-        """
-        if DataStream._data_validated_list(data_payload):
-            value = data_payload['value']
-            if len(value) == 3:
-                axis, shape, num = value
-                if len(axis) == 3 and len(shape) == 2 and len(num) == shape[0] * shape[1]:
-                    return True
-                else:
-                    return False
-            else:
-                return False
-        else:
-            return False
-
-    @staticmethod
-    def _data_validated_gauge(data_payload: Any):
-        """
-        _data_validated_gauge() is a static method to validate the payload structure 
-        for gauge chart data format.
-
-        Parameters
-        ----------
-        data_payload : Any
-            The data payload to be validated.
-
-        Returns
-        -------
-        bool
-            Returns True if the payload has length 3 and the format is like ['A', [10, 100], 73], otherwise False.
-
-        """
-        from numbers import Number
-        if DataStream._data_validated_list(data_payload):
-            value = data_payload['value']
-            if len(value) == 3:
-                data_name, data_range, data_value = value
-                if type(data_name) is str and type(data_range) is list and len(data_range) == 2 and isinstance(data_value, Number):
-                    return True
-                else:
-                    return False
-            else:
-                return False
-        else:
-            return False
 
     def __init__(self, key_word: str, chart_type: str):
         """
@@ -535,7 +268,7 @@ class DataStream:
         )
         
         thread.start()
-        logging.info(f"{self.chart_type}('{self.data_key}') calls {logic_func.__name__} in background (daemon) thread.")
+        logging.debug(f"{self.chart_type}('{self.data_key}') calls {logic_func.__name__} in background (daemon) thread.")
 
     def fresh(self, data_payload_value: Any):
         """
@@ -558,9 +291,299 @@ class DataStream:
         self.update(data_payload)
 
 
-class Line(DataStream):
+class DataStreamValidate(DataStream):
+
+    @staticmethod
+    def _data_validated(data_payload: Any):
+        """
+        _data_validated() is a static method to validate if the data payload 
+        contains the essential structure keys ('id', 'timestamp', 'value').
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated, typically expected to be a dictionary.
+
+        Returns
+        -------
+        bool
+            Returns True if the payload is a valid dictionary and contains 
+            'id', 'timestamp', and 'value' keys, otherwise False.
+
+        """ 
+        if (not isinstance(data_payload, dict)) or ("id" not in data_payload) or ("timestamp" not in data_payload) or ("value" not in data_payload):
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def _data_validated_number(data_payload: Any):
+        """
+        _data_validated_number() is a static method to validate the payload structure 
+        and ensure the 'value' field is a numerical type.
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if validation passes, otherwise False.
+
+        """    
+        from numbers import Number
+        if DataStreamValidate._data_validated(data_payload) and isinstance(data_payload['value'], Number):
+            return True
+        else:
+            return False
+    
+    @staticmethod
+    def _data_validated_string(data_payload: Any):
+        """
+        _data_validated_string() is a static method to validate the payload structure 
+        and ensure the 'value' field is a string type.
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if validation passes, otherwise False.
+
+        """
+        if DataStreamValidate._data_validated(data_payload) and type(data_payload['value']) is str:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def _data_validated_dict(data_payload: Any):
+        """
+        _data_validated_dict() is a static method to validate the payload structure 
+        and ensure the 'value' field is a dictionary type.
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if validation passes, otherwise False.
+
+        """      
+        if DataStreamValidate._data_validated(data_payload) and isinstance(data_payload['value'], dict):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def _data_validated_list(data_payload: Any):
+        """
+        _data_validated_list() is a static method to validate the payload structure 
+        and ensure the 'value' field is a list type.
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if validation passes, otherwise False.
+
+        """    
+
+        if DataStreamValidate._data_validated(data_payload) and isinstance(data_payload['value'], list):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def _data_validated_coordinate(data_payload: Any):
+        """
+        _data_validated_coordinate() is a static method to validate the payload structure 
+        and ensure the 'value' field is a list of length 2 containing numbers (coordinate).
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if validation passes, otherwise False.
+
+        """    
+        from numbers import Number
+        if DataStreamValidate._data_validated_list(data_payload):
+            value = data_payload['value']
+            if len(value) == 2:
+                x, y = value
+                if isinstance(x, Number) and isinstance(y, Number):
+                    return True
+                else:
+                    return False
+            else:
+                return False 
+        else:
+            return False
+
+    @staticmethod
+    def _data_validated_dimension(data_payload: Any):
+        """
+        _data_validated_dimension() is a static method to validate the payload structure 
+        for single-series chart data (e.g., Area, Pie) format: 
+        [[dimension_labels], [numerical_values]].
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if the payload is a list of length 2, where both elements 
+            are lists of equal length, otherwise False.
+
+        """
+        if DataStreamValidate._data_validated_list(data_payload):
+            value = data_payload['value']
+            if len(value) == 2:
+                dimension, num = value
+                if isinstance(dimension, list) and isinstance(num, list) and len(dimension) == len(num):
+                    return True
+                else:
+                    return False
+            return False
+        else:
+            return False
+
+    @staticmethod
+    def _data_validated_dimensions(data_payload: Any):
+        """
+        _data_validated_dimensions() is a static method to validate the payload structure 
+        for multi-series chart data (e.g., Areas, Radar) format: 
+        [[dimension_labels], [series_labels], [numerical_list_of_lists]].
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if the payload is a list of length 3, and the lengths of 
+            series labels and numerical lists match, otherwise False.
+
+        """
+        if DataStreamValidate._data_validated_list(data_payload):
+            value = data_payload['value']
+            if len(value) == 3:
+                dimension, series, num = value
+                if isinstance(dimension, list) and isinstance(series, list)  and isinstance(num, list) and len(series) == len(num):
+                    return True
+                else:
+                    return False
+            return False
+        else:
+            return False
+
+    @staticmethod
+    def _data_validated_surface(data_payload: Any):
+        """
+        _data_validated_surface() is a static method to validate the payload structure 
+        for 3D Surface chart data format.
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if the payload has length 3 and the dimensions/shape 
+            metrics are consistent, otherwise False.
+
+        """
+        if DataStreamValidate._data_validated_list(data_payload):
+            value = data_payload['value']
+            if len(value) == 3:
+                axis, shape, num = value
+                if len(axis) == 3 and len(shape) == 2 and len(num) == shape[0] * shape[1]:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
+
+    @staticmethod
+    def _data_validated_gauge(data_payload: Any):
+        """
+        _data_validated_gauge() is a static method to validate the payload structure 
+        for gauge chart data format.
+
+        Parameters
+        ----------
+        data_payload : Any
+            The data payload to be validated.
+
+        Returns
+        -------
+        bool
+            Returns True if the payload has length 3 and the format is like ['A', [10, 100], 73], otherwise False.
+
+        """
+        from numbers import Number
+        if DataStreamValidate._data_validated_list(data_payload):
+            value = data_payload['value']
+            if len(value) == 3:
+                data_name, data_range, data_value = value
+                if type(data_name) is str and type(data_range) is list and len(data_range) == 2 and isinstance(data_value, Number):
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
+
+    def __init__(self, key_word: str, chart_type: str):
+        super().__init__(key_word=key_word, chart_type=chart_type)
+        self._data_validated_error_info = r'Invalid data form for ' + str(self.chart_type) + ' -> ' + str(self.key_word) + '. '
+
+    def update(self, data_payload: Dict[str, Any], func: Callable):
+        """
+        update() will validate the data before pushing it to app.
+
+        Parameters
+        ----------
+        data_payload : Dict[str, Any]
+            The data payload dictionary containing 'id', 'timestamp', and 'value'.
+        func : Callable
+            The validate function which accepts data_payload and returns True if data is validated, otherwise returns False.
+
+        """
+        super().update(data_payload) if func(data_payload) else logging.error(self._data_validated_error_info)
+
+
+class Line(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='line')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: line_instance.update({id:xxx, timestamp:xxx, value:some_number}) or line_instance.fresh(some_number)"
 
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -574,16 +597,13 @@ class Line(DataStream):
             {id:xxx, timestamp:xxx, value:some_number}
 
         """
-        if DataStream._data_validated_number(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: line_instance.update({id:xxx, timestamp:xxx, value:some_number}) or line_instance.fresh(some_number)")
+        super().update(data_payload, DataStreamValidate._data_validated_number)
 
 
-
-class Bar(DataStream):
+class Bar(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='bar')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: bar_instance.update({id:xxx, timestamp:xxx, value:some_number}) or bar_instance.fresh(some_number)"
 
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -597,15 +617,13 @@ class Bar(DataStream):
             {id:xxx, timestamp:xxx, value:some_number}
 
         """
-        if DataStream._data_validated_number(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: bar_instance.update({id:xxx, timestamp:xxx, value:some_number}) or bar_instance.fresh(some_number)")
+        super().update(data_payload, DataStreamValidate._data_validated_number)
 
 
-class Sequence(DataStream):
+class Sequence(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='sequence')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: sequence_instance.update({id:xxx, timestamp:xxx, value:some_number}) or sequence_instance.fresh(some_number)"
     
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -619,15 +637,13 @@ class Sequence(DataStream):
             {id:xxx, timestamp:xxx, value:some_number}
 
         """
-        if DataStream._data_validated_number(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: sequence_instance.update({id:xxx, timestamp:xxx, value:some_number}) or sequence_instance.fresh(some_number)")
+        super().update(data_payload, DataStreamValidate._data_validated_number)
 
 
-class Lines(DataStream):
+class Lines(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='lines')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: lines_instance.update({id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}) or lines_instance.fresh({A:some_number, B:some_number})"
 
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -642,15 +658,13 @@ class Lines(DataStream):
             {id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}
 
         """
-        if DataStream._data_validated_dict(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: lines_instance.update({id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}) or lines_instance.fresh({A:some_number, B:some_number}).")
+        super().update(data_payload, DataStreamValidate._data_validated_dict)
 
 
-class Bars(DataStream):
+class Bars(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='bars')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: bars_instance.update({id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}) or bars_instance.fresh({A:some_number, B:some_number})"
     
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -665,15 +679,13 @@ class Bars(DataStream):
             {id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}
 
         """
-        if DataStream._data_validated_dict(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: bars_instance.update({id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}) or bars_instance.fresh({A:some_number, B:some_number}).")
+        super().update(data_payload, DataStreamValidate._data_validated_dict)
 
 
-class Sequences(DataStream):
+class Sequences(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='sequences')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: sequences_instance.update({id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}) or sequences_instance.fresh({A:some_number, B:some_number})"
     
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -688,15 +700,13 @@ class Sequences(DataStream):
             {id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}
 
         """
-        if DataStream._data_validated_dict(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: sequences_instance.update({id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}) or sequences_instance.fresh({A:some_number, B:some_number}).")
+        super().update(data_payload, DataStreamValidate._data_validated_dict)
 
 
-class Scatter(DataStream):
+class Scatter(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='scatter')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: scatter_instance.update({id:xxx, timestamp:xxx, value:[some_number, some_number]}) or scatter_instance.fresh([some_number, some_number])"
 
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -711,15 +721,13 @@ class Scatter(DataStream):
             {id:xxx, timestamp:xxx, value:[some_number, some_number]}
 
         """
-        if DataStream._data_validated_coordinate(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: scatter_instance.update({id:xxx, timestamp:xxx, value:[some_number, some_number]}) or scatter_instance.fresh([some_number, some_number]).")
+        super().update(data_payload, DataStreamValidate._data_validated_coordinate)
 
 
-class Area(DataStream):
+class Area(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='area')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: area_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2, 3]]}) or area_instance.fresh([[A, B, C], [1, 2, 3]])"
 
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -736,15 +744,13 @@ class Area(DataStream):
             the true value at different x-axis tickers.
 
         """
-        if DataStream._data_validated_dimension(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: area_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2, 3]]}) or area_instance.fresh([[A, B, C], [1, 2, 3]]).")
+        super().update(data_payload, DataStreamValidate._data_validated_dimension)
 
 
-class Areas(DataStream):
+class Areas(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='areas')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: areas_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [label_1, label_2], [[1, 2, 3],[4, 5, 6]]]}) or areas_instance.fresh([[A, B, C], [label_1, label_2], [[1, 2, 3],[4, 5, 6]]])"
 
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -762,15 +768,13 @@ class Areas(DataStream):
             values for different data series.
 
         """
-        if DataStream._data_validated_dimensions(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: areas_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [label_1, label_2], [[1, 2, 3],[4, 5, 6]]]}) or areas_instance.fresh([[A, B, C], [label_1, label_2], [[1, 2, 3],[4, 5, 6]]]).")
+        super().update(data_payload, DataStreamValidate._data_validated_dimensions)
 
 
-class Pie(DataStream):
+class Pie(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='pie')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: pie_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2, 3]]}) or pie_instance.fresh([[A, B, C], [1, 2, 3]])"
     
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -788,15 +792,13 @@ class Pie(DataStream):
             the true value for each label.
 
         """
-        if DataStream._data_validated_dimension(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: pie_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2, 3]]}) or pie_instance.fresh([[A, B, C], [1, 2, 3]]).")
+        super().update(data_payload, DataStreamValidate._data_validated_dimension)
 
 
-class Radar(DataStream):
+class Radar(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='radar')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: radar_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [100, 100, 100], [4, 5, 6]]}) or radar_instance.fresh([[A, B, C], [100, 100, 100], [4, 5, 6]])"
 
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -814,14 +816,13 @@ class Radar(DataStream):
             the true value at different dimensions.
 
         """
-        if DataStream._data_validated_dimensions(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: radar_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [100, 100, 100], [4, 5, 6]]}) or radar_instance.fresh([[A, B, C], [100, 100, 100], [4, 5, 6]]).")
+        super().update(data_payload, DataStreamValidate._data_validated_dimensions)
 
-class Surface(DataStream):
+
+class Surface(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='surface')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: surface_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2], [[1.2, 2.2, 9],[3.2, 4.3, 8]]]}) or surface_instance.fresh([[A, B, C], [1, 2], [[1.2, 2.2, 9],[3.2, 4.3, 8]]])"
     
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -838,14 +839,13 @@ class Surface(DataStream):
             - The third element of 'value' is a list of coordinates, e.g., [[x1, y1, z1], [x2, y2, z2]...].
 
         """
-        if DataStream._data_validated_surface(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: surface_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2], [[1.2, 2.2, 9],[3.2, 4.3, 8]]]}) or surface_instance.fresh([[A, B, C], [1, 2], [[1.2, 2.2, 9],[3.2, 4.3, 8]]]).")
+        super().update(data_payload, DataStreamValidate._data_validated_surface)
 
-class Text(DataStream):
+
+class Text(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='text')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: text_instance.update({id:xxx, timestamp:xxx, value:some_string}) or text_instance.fresh(some_string)"
 
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -859,14 +859,13 @@ class Text(DataStream):
             {id:xxx, timestamp:xxx, value:some_string}
 
         """
-        if DataStream._data_validated_string(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: text_instance.update({id:xxx, timestamp:xxx, value:some_string}) or text_instance.fresh(some_string)")
+        super().update(data_payload, DataStreamValidate._data_validated_string)
 
-class Gauge(DataStream):
+
+class Gauge(DataStreamValidate):
     def __init__(self, key_word: str):
         super().__init__(key_word, chart_type='gauge')
+        self._data_validated_error_info = self._data_validated_error_info + r"Must be like: gauge_instance.update({id:xxx, timestamp:xxx, value:['A', [10, 100], 73]}) or gauge_instance.fresh(['A', [10, 100], 73])"
 
     def update(self, data_payload: Dict[str, Any]):
         """
@@ -884,9 +883,6 @@ class Gauge(DataStream):
             the true value of your data.
 
         """
-        if DataStream._data_validated_gauge(data_payload):
-            super().update(data_payload)
-        else:
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: gauge_instance.update({id:xxx, timestamp:xxx, value:['A', [10, 100], 73]}) or gauge_instance.fresh(['A', [10, 100], 73]).")
+        super().update(data_payload, DataStreamValidate._data_validated_gauge)
 
 

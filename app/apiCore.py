@@ -6,7 +6,7 @@ import logging
 from typing import Union, Dict, Any, Set, Deque, Callable, Awaitable
 from collections import deque
 from websockets.server import serve, WebSocketServerProtocol
-from websockets.exceptions import ConnectionClosedOK, ConnectionClosedError
+from websockets.exceptions import ConnectionClosedOK, ConnectionClosedError, ConnectionClosed
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -416,6 +416,9 @@ class WebsocketManager:
         """
         try:
             await websocket.send(message) 
+        except ConnectionClosed as e:
+            logger.info(f"WebSocket connection closed (Code {e.code}) during send, marking for cleanup: {e}")
+            disconnected_websockets.add(websocket)
         except Exception as e:
             logger.error(f"Unexpected error during WebSocket send: {e}", exc_info=True)
             disconnected_websockets.add(websocket)
