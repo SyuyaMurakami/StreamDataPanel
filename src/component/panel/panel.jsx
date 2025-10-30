@@ -177,7 +177,7 @@ const Panel = ({ children }) => {
                         id="ChartType"
                         type="text"
                         className="underline-input"
-                        placeholder=""
+                        placeholder=" "
                         value={chartTypeInput}
                         onChange={(e) => setChartTypeInput(e.target.value)}
                     />
@@ -188,7 +188,7 @@ const Panel = ({ children }) => {
                         id="KeyWord"
                         type="text"
                         className="underline-input"
-                        placeholder=""
+                        placeholder=" "
                         value={keyWordInput}
                         onChange={(e) => setKeyWordInput(e.target.value)}
                     />

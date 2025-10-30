@@ -6,7 +6,7 @@
 
 .app {
   font-size: clamp(0.8rem, 1.5vw, 2rem);
-  min-width: 450px;
+  min-width: 53vh;
 }
 
 .header-row {
