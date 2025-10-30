@@ -574,10 +574,11 @@ class Line(DataStream):
             {id:xxx, timestamp:xxx, value:some_number}
 
         """
-        if not DataStream._data_validated_number(data_payload):
-            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:some_number}")
-        else:
+        if DataStream._data_validated_number(data_payload):
             super().update(data_payload)
+        else:
+            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: line_instance.update({id:xxx, timestamp:xxx, value:some_number}) or line_instance.fresh(some_number)")
+
 
 
 class Bar(DataStream):
@@ -596,10 +597,11 @@ class Bar(DataStream):
             {id:xxx, timestamp:xxx, value:some_number}
 
         """
-        if not DataStream._data_validated_number(data_payload):
-            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:some_number}")
-        else:
+        if DataStream._data_validated_number(data_payload):
             super().update(data_payload)
+        else:
+            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: bar_instance.update({id:xxx, timestamp:xxx, value:some_number}) or bar_instance.fresh(some_number)")
+
 
 class Sequence(DataStream):
     def __init__(self, key_word: str):
@@ -617,10 +619,11 @@ class Sequence(DataStream):
             {id:xxx, timestamp:xxx, value:some_number}
 
         """
-        if not DataStream._data_validated_number(data_payload):
-            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:some_number}")
-        else:
+        if DataStream._data_validated_number(data_payload):
             super().update(data_payload)
+        else:
+            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: sequence_instance.update({id:xxx, timestamp:xxx, value:some_number}) or sequence_instance.fresh(some_number)")
+
 
 class Lines(DataStream):
     def __init__(self, key_word: str):
@@ -639,10 +642,11 @@ class Lines(DataStream):
             {id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}
 
         """
-        if not DataStream._data_validated_dict(data_payload):
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}.")
-        else:
+        if DataStream._data_validated_dict(data_payload):
             super().update(data_payload)
+        else:
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: lines_instance.update({id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}) or lines_instance.fresh({A:some_number, B:some_number}).")
+
 
 class Bars(DataStream):
     def __init__(self, key_word: str):
@@ -661,10 +665,11 @@ class Bars(DataStream):
             {id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}
 
         """
-        if not DataStream._data_validated_dict(data_payload):
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}.")
-        else:
+        if DataStream._data_validated_dict(data_payload):
             super().update(data_payload)
+        else:
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: bars_instance.update({id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}) or bars_instance.fresh({A:some_number, B:some_number}).")
+
 
 class Sequences(DataStream):
     def __init__(self, key_word: str):
@@ -683,10 +688,11 @@ class Sequences(DataStream):
             {id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}
 
         """
-        if not DataStream._data_validated_dict(data_payload):
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}.")
-        else:
+        if DataStream._data_validated_dict(data_payload):
             super().update(data_payload)
+        else:
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: sequences_instance.update({id:xxx, timestamp:xxx, value:{A:some_number, B:some_number}}) or sequences_instance.fresh({A:some_number, B:some_number}).")
+
 
 class Scatter(DataStream):
     def __init__(self, key_word: str):
@@ -705,10 +711,11 @@ class Scatter(DataStream):
             {id:xxx, timestamp:xxx, value:[some_number, some_number]}
 
         """
-        if not DataStream._data_validated_coordinate(data_payload):
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:[some_number, some_number]}.")
-        else:
+        if DataStream._data_validated_coordinate(data_payload):
             super().update(data_payload)
+        else:
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: scatter_instance.update({id:xxx, timestamp:xxx, value:[some_number, some_number]}) or scatter_instance.fresh([some_number, some_number]).")
+
 
 class Area(DataStream):
     def __init__(self, key_word: str):
@@ -729,10 +736,11 @@ class Area(DataStream):
             the true value at different x-axis tickers.
 
         """
-        if not DataStream._data_validated_dimension(data_payload):
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2, 3]]}.")
-        else:
+        if DataStream._data_validated_dimension(data_payload):
             super().update(data_payload)
+        else:
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: area_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2, 3]]}) or area_instance.fresh([[A, B, C], [1, 2, 3]]).")
+
 
 class Areas(DataStream):
     def __init__(self, key_word: str):
@@ -754,10 +762,11 @@ class Areas(DataStream):
             values for different data series.
 
         """
-        if not DataStream._data_validated_dimensions(data_payload):
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:[[A, B, C], [label_1, label_2], [[1, 2, 3],[4, 5, 6]]]}.")
-        else:
+        if DataStream._data_validated_dimensions(data_payload):
             super().update(data_payload)
+        else:
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: areas_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [label_1, label_2], [[1, 2, 3],[4, 5, 6]]]}) or areas_instance.fresh([[A, B, C], [label_1, label_2], [[1, 2, 3],[4, 5, 6]]]).")
+
 
 class Pie(DataStream):
     def __init__(self, key_word: str):
@@ -779,10 +788,11 @@ class Pie(DataStream):
             the true value for each label.
 
         """
-        if not DataStream._data_validated_dimension(data_payload):
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2, 3]]}.")
-        else:
+        if DataStream._data_validated_dimension(data_payload):
             super().update(data_payload)
+        else:
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: pie_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2, 3]]}) or pie_instance.fresh([[A, B, C], [1, 2, 3]]).")
+
 
 class Radar(DataStream):
     def __init__(self, key_word: str):
@@ -804,10 +814,10 @@ class Radar(DataStream):
             the true value at different dimensions.
 
         """
-        if not DataStream._data_validated_dimensions(data_payload):
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:[[A, B, C], [100, 100, 100], [4, 5, 6]]}.")
-        else:
+        if DataStream._data_validated_dimensions(data_payload):
             super().update(data_payload)
+        else:
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: radar_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [100, 100, 100], [4, 5, 6]]}) or radar_instance.fresh([[A, B, C], [100, 100, 100], [4, 5, 6]]).")
 
 class Surface(DataStream):
     def __init__(self, key_word: str):
@@ -828,10 +838,10 @@ class Surface(DataStream):
             - The third element of 'value' is a list of coordinates, e.g., [[x1, y1, z1], [x2, y2, z2]...].
 
         """
-        if not DataStream._data_validated_surface(data_payload):
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2], [[1.2, 2.2, 9],[3.2, 4.3, 8]]]}.")
-        else:
+        if DataStream._data_validated_surface(data_payload):
             super().update(data_payload)
+        else:
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: surface_instance.update({id:xxx, timestamp:xxx, value:[[A, B, C], [1, 2], [[1.2, 2.2, 9],[3.2, 4.3, 8]]]}) or surface_instance.fresh([[A, B, C], [1, 2], [[1.2, 2.2, 9],[3.2, 4.3, 8]]]).")
 
 class Text(DataStream):
     def __init__(self, key_word: str):
@@ -849,10 +859,10 @@ class Text(DataStream):
             {id:xxx, timestamp:xxx, value:some_string}
 
         """
-        if not DataStream._data_validated_string(data_payload):
-            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:some_string}")
-        else:
+        if DataStream._data_validated_string(data_payload):
             super().update(data_payload)
+        else:
+            logging.error(f"Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: text_instance.update({id:xxx, timestamp:xxx, value:some_string}) or text_instance.fresh(some_string)")
 
 class Gauge(DataStream):
     def __init__(self, key_word: str):
@@ -874,9 +884,9 @@ class Gauge(DataStream):
             the true value of your data.
 
         """
-        if not DataStream._data_validated_gauge(data_payload):
-            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: {id:xxx, timestamp:xxx, value:['A', [10, 100], 73]}.")
-        else:
+        if DataStream._data_validated_gauge(data_payload):
             super().update(data_payload)
+        else:
+            logging.error("Invalid data update form for "+str(self.chart_type)+' -> '+str(self.key_word)+r". Must be like: gauge_instance.update({id:xxx, timestamp:xxx, value:['A', [10, 100], 73]}) or gauge_instance.fresh(['A', [10, 100], 73]).")
 
 
