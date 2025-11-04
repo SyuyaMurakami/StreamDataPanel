@@ -4,6 +4,10 @@
 
 StreamDataPanel is a local-hosted web app, which is used to show frequently-freshed data as line chart, bar chart, pie chart, radar chart, scatter chart or surface chart. It is based on eel with python, optimized for speed.
 
+![Subscribe](https://github.com/SyuyaMurakami/StreamDataPanel/raw/main/assets/1_low_res.gif)
+
+![Config](https://github.com/SyuyaMurakami/StreamDataPanel/raw/main/assets/2_low_res.gif)
+
 ## Quick Check
 
 To see functions of StreamDataPanel, you can firstly run a test.
