@@ -11,10 +11,10 @@ One picture is better than a thousand words:
 <table width="100%">
   <tr>
     <td align="center" width="50%" style="border: none;">
-      <img src="https://github.com/SyuyaMurakami/StreamDataPanel/raw/main/assets/1_low_res.gif" alt="GIF 1" style="width: 90%;">
+      <img src="https://github.com/SyuyaMurakami/StreamDataPanel/raw/main/assets/1_low_res.gif" alt="GIF 1" style="width: 100%;">
     </td>
     <td align="center" width="50%" style="border: none;">
-      <img src="https://github.com/SyuyaMurakami/StreamDataPanel/raw/main/assets/2_low_res.gif" alt="GIF 2" style="width: 90%;">
+      <img src="https://github.com/SyuyaMurakami/StreamDataPanel/raw/main/assets/2_low_res.gif" alt="GIF 2" style="width: 100%;">
     </td>
   </tr>
 </table>
