@@ -4,6 +4,12 @@
 
 StreamDataPanel is a local-hosted web app, which is used to show frequently-freshed data as line chart, bar chart, pie chart, radar chart, scatter chart or surface chart. It is based on eel with python, optimized for speed.
 
+## Install
+
+StreamDataPanel can be installed through ``pip`` , as follows:
+
+    pip install StreamDataPanel
+
 ## Quick View
 
 One picture is better than a thousand words:
@@ -23,7 +29,7 @@ One picture is better than a thousand words:
 
 To see functions of StreamDataPanel, you can firstly run a test.
 
-Use ``testSDP`` in terminal to run a test APP. A web will be opened automatically. Type one of the following words below into ``ChartType`` input: ``line`` , ``bar`` , ``sequence`` , ``lines`` , ``bars`` , ``sequences`` , ``pie`` , ``radar`` , ``scatter`` , ``surface`` , ``area`` , ``areas``. Then type ``test`` into ``KeyWord`` input. Click ``Subscribe`` to see if it runs correctly. If You see a chart with data freshed every second, it means success.
+After installing it, use ``testSDP`` in terminal to run a test APP. A web will be opened automatically. Type one of the following words below into ``ChartType`` input: ``line`` , ``bar`` , ``sequence`` , ``lines`` , ``bars`` , ``sequences`` , ``pie`` , ``radar`` , ``scatter`` , ``surface`` , ``area`` , ``areas``. Then type ``test`` into ``KeyWord`` input. Click ``Subscribe`` to see if it runs correctly. If You see a chart with data freshed every second, it means success.
 
 ## Quick Start
 
