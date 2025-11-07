@@ -247,7 +247,7 @@ export const chartConfigs = {
         tooltip: { ...getBaseOptions(title).tooltip },
         legend: {
             // Legend data from the keys of the value object
-            data: Object.keys(data[0].value),
+            data: data[0].value[0],
             top: ChartConst.LEGEND_TOP,
             selectedMode: ChartConst.LEGEND_SELECT_MODE,
         },
@@ -257,13 +257,13 @@ export const chartConfigs = {
             axisLabel: { interval: ChartConst.SEQUENCE_X_AXIS_LABEL_INTERVAL, hideOverlap: ChartConst.AXIS_HIDE_OVERLAP },
         },
         // Flatten all values to calculate the overall y-axis range
-        yAxis: getValueAxisOptions(data.flatMap((item) => Object.values(item.value))),
+        yAxis: getValueAxisOptions(data.flatMap((item) => item[1])),
         // Create a series for each key in the value object
-        series: Object.keys(data[0].value).map((name) =>
+        series: data[0].value[0].map((name, dim) =>
             getSeriesOptions(
                 'line',
                 name,
-                data.map((item) => ({id:item.id, value:[item.index, item.value[name]]}))
+                data.map((item) => ({id:item.id, value:[item.index, item.value[1][dim]]}))
             )
         ),
     }),
@@ -272,7 +272,7 @@ export const chartConfigs = {
         ...getBaseOptions(title, theme),
         tooltip: { ...getBaseOptions(title).tooltip },
         legend: {
-            data: Object.keys(data[0].value),
+            data: data[0].value[0],
             top: ChartConst.LEGEND_TOP,
             selectedMode: ChartConst.LEGEND_SELECT_MODE,
         },
@@ -282,12 +282,12 @@ export const chartConfigs = {
             axisLine: { lineStyle: { color: ChartConst.AXIS_LINE_COLOR } },
             axisLabel: { interval: ChartConst.LINE_X_AXIS_LABEL_INTERVAL, hideOverlap: ChartConst.AXIS_HIDE_OVERLAP },
         },
-        yAxis: getValueAxisOptions(data.flatMap((item) => Object.values(item.value))),
-        series: Object.keys(data[0].value).map((name) =>
+        yAxis: getValueAxisOptions(data.flatMap((item) => item.value[1])),
+        series: data[0].value[0].map((name, dim) =>
             getSeriesOptions(
                 'line',
                 name,
-                data.map((item) => [item.index, item.value[name]])
+                data.map((item) => [item.index, item.value[1][dim]])
             )
         ),
     }),
@@ -296,7 +296,7 @@ export const chartConfigs = {
         ...getBaseOptions(title, theme),
         tooltip: { ...getBaseOptions(title).tooltip, axisPointer: { type: ChartConst.BAR_TOOLTIP_AXISPOINTER_TYPE } },
         legend: {
-            data: Object.keys(data[0].value),
+            data: data[0].value[0],
             top: ChartConst.LEGEND_TOP,
             selectedMode: ChartConst.LEGEND_SELECT_MODE,
         },
@@ -305,12 +305,12 @@ export const chartConfigs = {
             data: data.map((item) => item.index),
             axisLabel: { interval: ChartConst.BAR_X_AXIS_LABEL_INTERVAL, hideOverlap: ChartConst.AXIS_HIDE_OVERLAP },
         },
-        yAxis: getValueAxisOptions(data.flatMap((item) => Object.values(item.value))),
-        series: Object.keys(data[0].value).map((name) =>
+        yAxis: getValueAxisOptions(data.flatMap((item) => item.value[1])),
+        series: data[0].value[0].map((name, dim) =>
             getSeriesOptions(
                 'bar',
                 name,
-                data.map((item) => item.value[name])
+                data.map((item) => item.value[1][dim])
             )
         ),
     }),
