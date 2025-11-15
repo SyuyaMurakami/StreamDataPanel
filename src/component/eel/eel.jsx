@@ -11,20 +11,27 @@ let config = {
 };
 
 export async function loadConfig() {
-    if (typeof eel === 'undefined') {
-        console.warn("Eel object not found. Using default/placeholder configuration.");
-        return config;
-    }
-
     try {
-        // 调用 Python 暴露的函数 (注意最后的 () 用于获取返回值)
-        const pyConfig = await eel.get_initial_config()(); 
-        config = pyConfig;
-        console.log("Configuration loaded from Python successfully.");
+        const response = await fetch('/config');
+        const hsConfig = await response.json();
+        config = hsConfig;
+        console.log("Configuration loaded from Haskell successfully.");
         return config;
-    } catch (error) {
-        console.error("Failed to load configuration from Python:", error);
-        return config;
+    } catch (hsError) {
+        console.log("Failed to load configuration from Haskell:", hsError);
+        if (typeof eel === 'undefined') {
+            console.warn("Eel object not found. Using default/placeholder configuration.");
+            return config;
+        }
+        try {
+            const pyConfig = await eel.get_initial_config()(); 
+            config = pyConfig;
+            console.log("Configuration loaded from Python successfully.");
+            return config;
+        } catch (pyError) {
+            console.error("Failed to load configuration from Python:", pyError);
+            return config;
+        }    
     }
 }
 
