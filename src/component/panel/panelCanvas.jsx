@@ -82,7 +82,7 @@ const usePanelCore = (isImporting, chartStates) => {
             // Increment version to force a re-render of components using chartData
             setChartDataVersion(v => v + 1); 
             dataUpdateQueued.current = false;
-        }, 150); // Throttle delay: 150ms
+        }, 5); // Throttle delay: 5ms
     }, []);
     
     // Invoke the encapsulated cleanup Effect Hook

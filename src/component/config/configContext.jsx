@@ -22,7 +22,7 @@ export const ConfigProvider = ({
     triggerImport, 
     importInputRef, 
     isImporting,
-    // [Modification Point 1]: Receive panel title state
+    // Receive panel title state
     panelTitle,
     setPanelTitle,
 }) => {
@@ -34,7 +34,7 @@ export const ConfigProvider = ({
         triggerImport,
         importInputRef,
         isImporting,
-        // [Modification Point 2]: Expose panel title state
+        // Expose panel title state
         panelTitle,
         setPanelTitle,
     };

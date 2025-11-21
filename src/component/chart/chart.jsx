@@ -23,9 +23,7 @@ use([SurfaceChart, Grid3DComponent])
 const getChartOptions = (chartType, title, chartData, theme) => {
     // Initialize data array
     const data = chartData || [];
-    
-    // The theme is now passed as an argument, no need to call useTheme() here
-    
+
     // Return empty options if no data is available
     if (data.length === 0) return {};
     
@@ -38,7 +36,6 @@ const getChartOptions = (chartType, title, chartData, theme) => {
 
 // Chart component definition
 const Chart = ({ chartType, title, data, setInstance }) => {
-    // === Fix: Move useTheme to the top level of the Chart component ===
     // Get the current theme from the custom Hook
     const { theme } = useTheme(); 
     // =================================================
@@ -65,8 +62,6 @@ const Chart = ({ chartType, title, data, setInstance }) => {
     return (
         <ReactECharts 
             option={options} 
-            // Consider passing the theme prop to ReactECharts so it can correctly apply the ECharts theme
-            // theme={theme} 
             style={{ height: '100%', width: '100%' }} 
             onChartReady={onChartReady} 
         />

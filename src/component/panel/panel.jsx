@@ -63,19 +63,12 @@ const useChartDblClickEffect = (charts, handleChartDoubleClick, chartRefs, chart
                 currentListeners.delete(chartId);
             }
         });
-
-        // Cleanup function is not strictly needed here as listeners are managed inside the loop,
-        // but it's good practice to ensure listeners are removed on unmount.
-        // However, since `chartListeners.current` is a ref, the cleanup is mostly handled by re-running the effect.
-
     }, [charts, handleChartDoubleClick, chartRefs, chartListeners]);
 }
 
 /* Logic to force ECharts resize after zoom/unzoom state change */
 const useChartResizeEffect = (chartStates, chartRefs) => {
     useEffect(() => {
-        // Only run resize for charts that are in the 'on' state (i.e., zoomed in)
-        // or when their state has just flipped, though the logic below focuses on the final state check.
         Object.entries(chartStates).forEach(([chartId, state]) => {
             if (state === 'on') {
                 const echartsInstance = chartRefs.current.get(chartId);
