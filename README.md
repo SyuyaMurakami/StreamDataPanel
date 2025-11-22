@@ -8,7 +8,9 @@ StreamDataPanel is a local-hosted web app, which is used to show frequently-fres
 
 Most ploting libraries in python focus on static data. It could be difficult to show data which can be **freshed every second** . StreamDataPanel supplies a method to present it.
 
-StreamDataPanel is designed to **asynchronously transmit data** . A chart can be subscribed with its data updated twice per second, while another chart can be updated 10 times per second. They won’t influence each other. And you can open as many browser tabs as you want, or subscribe a same chart as many times as you want.
+StreamDataPanel is designed with an **event-driven** mode. The **latency of StreamDataPanel can be as low as just few micro-second** , in the case of localhosted data server.
+
+StreamDataPanel is also designed to **asynchronously transmit data** . A chart can be subscribed with its data updated twice per second, while another chart can be updated 10 times per second. They won’t influence each other. And you can open as many browser tabs as you want, or subscribe a same chart as many times as you want.
 
 You can design your own data monitor panel with StreamDataPanel. Every chart in StreamDataPanel can be **dragged to resize or re-locate** . Your design can be saved into local disk, and re-upload to StreamDataPanel next time you want to use it.
 
