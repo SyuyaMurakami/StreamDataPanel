@@ -4,6 +4,18 @@
 
 StreamDataPanel is a local-hosted web app, which is used to show frequently-freshed data as line chart, bar chart, pie chart, radar chart, scatter chart or surface chart. It is based on eel with python, optimized for speed.
 
+### Why Another Plotting Library?
+
+Most ploting libraries in python focus on static data. It could be difficult to show data which can be **freshed every second** . StreamDataPanel supplies a method to present it.
+
+StreamDataPanel is designed to **asynchronously transmit data** . A chart can be subscribed with its data updated twice per second, while another chart can be updated 10 times per second. They won’t influence each other. And you can open as many browser tabs as you want, or subscribe a same chart as many times as you want.
+
+You can design your own data monitor panel with StreamDataPanel. Every chart in StreamDataPanel can be **dragged to resize or re-locate** . Your design can be saved into local disk, and re-upload to StreamDataPanel next time you want to use it.
+
+StreamDataPanel provides a **user-friendly API** , making it easier to show your data. You do not need to worry about the form of axis tickers or axis value ranges, etc. All you need to do is to give a key word as title of a chart, and pass your data to API, fresh it any time you want.
+
+StreamDataPanel **seperates web app with data server** . You can run your data updating process in one machine and subscribe these charts from others.
+
 ## Install
 
 StreamDataPanel can be installed through ``pip`` , as follows:
